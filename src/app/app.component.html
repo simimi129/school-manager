@@ -1,2 +1,11 @@
+@if (auth.isAuthenticated$ | async) { logged in } @else { logged out }
+<button
+  (click)="
+    auth.logout({ logoutParams: { returnTo: document.location.origin } })
+  "
+>
+  Logout
+</button>
+<button (click)="auth.loginWithRedirect()">Login</button>
 <app-header />
 <router-outlet></router-outlet>
