@@ -7,5 +7,8 @@
   Logout
 </button>
 <button (click)="auth.loginWithRedirect()">Login</button>
+
+<div>{{ auth.user$ | async | json }}</div>
+
 <app-header />
 <router-outlet></router-outlet>
