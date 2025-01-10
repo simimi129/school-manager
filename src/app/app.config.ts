@@ -14,5 +14,9 @@ const authConfig: AuthConfig = {
 };
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideAuth0(authConfig), provideAnimationsAsync()],
+  providers: [
+    provideRouter(routes),
+    provideAuth0(authConfig),
+    provideAnimationsAsync(),
+  ],
 };

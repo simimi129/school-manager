@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { IconButtonComponent } from '../../../shared/components/icon-button/icon-button.component';
 import { LinkComponent } from '../../../shared/components/link/link.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-navigation',
-  imports: [IconButtonComponent, LinkComponent],
+  imports: [ButtonComponent, LinkComponent, MatTooltipModule],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
