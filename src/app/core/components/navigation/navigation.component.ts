@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { IconButtonComponent } from '../../../shared/components/icon-button/icon-button.component';
+import { LinkComponent } from '../../../shared/components/link/link.component';
 
 @Component({
   selector: 'app-navigation',
-  imports: [],
+  imports: [IconButtonComponent, LinkComponent],
   templateUrl: './navigation.component.html',
-  styleUrl: './navigation.component.scss'
+  styleUrl: './navigation.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NavigationComponent {
-
-}
+export class NavigationComponent {}
