@@ -1,23 +1,39 @@
 <div class="avatar">asd</div>
 <div class="nav-links">
-  <app-link link="timetable" tooltip="Timetable">
-    <div matTooltip="Timetable">
-      <app-button icon="schedule" />
-    </div>
-  </app-link>
-  <app-link link="subjects" tooltip="Subjects">
-    <div matTooltip="Subjects">
-      <app-button icon="book_2" />
-    </div>
-  </app-link>
-  <app-link link="chat" tooltip="Chat">
-    <div matTooltip="Chat">
-      <app-button icon="chat" />
-    </div>
-  </app-link>
+  <a
+    routerLink="timetable"
+    routerLinkActive="router-link-active"
+    [matTooltip]="isOpen ? '' : 'Timetable'"
+  >
+    <mat-icon>schedule</mat-icon>
+    @if (isOpen) {
+    <span> Timetable </span>
+    }
+  </a>
+  <a
+    routerLink="subjects"
+    routerLinkActive="router-link-active"
+    [matTooltip]="isOpen ? '' : 'Subjects'"
+  >
+    <mat-icon>book_2</mat-icon>
+    @if (isOpen) {
+    <span> Subjects </span>
+    }
+  </a>
+  <a
+    routerLink="chat"
+    routerLinkActive="router-link-active"
+    [matTooltip]="isOpen ? '' : 'Chat'"
+  >
+    <mat-icon>chat</mat-icon>
+    @if (isOpen) {
+    <span> Chat </span>
+    }
+  </a>
 </div>
-<div class="logout" tooltip="Logout">
-  <div matTooltip="Logout">
-    <app-button icon="logout" />
-  </div>
-</div>
+<button mat-icon-button [matTooltip]="isOpen ? '' : 'Chat'">
+  <mat-icon>logout</mat-icon>
+  @if (isOpen) {
+  <span> logout </span>
+  }
+</button>

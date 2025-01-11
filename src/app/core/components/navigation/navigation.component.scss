@@ -6,6 +6,10 @@
   padding: 20px;
 }
 
+.avatar {
+  background: salmon;
+}
+
 .nav-links {
   display: flex;
   flex-direction: column;
@@ -15,6 +19,15 @@
   gap: 30px;
 }
 
-.avatar {
-  background: salmon;
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.router-link-active {
+  color: #bff937;
+}
+
+button {
+  color: #fff;
 }

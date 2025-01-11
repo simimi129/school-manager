@@ -1,14 +1,22 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { LinkComponent } from '../../../shared/components/link/link.component';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
-  imports: [ButtonComponent, LinkComponent, MatTooltipModule, MatButtonModule],
+  imports: [
+    MatTooltipModule,
+    MatButtonModule,
+    MatIconModule,
+    RouterModule,
+    MatTooltipModule,
+  ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NavigationComponent {}
+export class NavigationComponent {
+  isOpen = false;
+}
