@@ -1,2 +1,4 @@
 <app-navigation />
-<router-outlet></router-outlet>
+<app-page-container-with-title [title]="title | async">
+  <router-outlet></router-outlet>
+</app-page-container-with-title>

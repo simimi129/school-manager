@@ -19,6 +19,7 @@ export const routes: Routes = [
   {
     path: 'chat',
     component: ChatComponent,
+    title: 'Chat',
     children: [
       {
         path: ':id',
@@ -26,21 +27,30 @@ export const routes: Routes = [
       },
     ],
   },
-  { path: 'class-room', component: ClassRoomComponent },
+  { path: 'class-room', component: ClassRoomComponent, title: 'Class Room' },
   { path: 'login', component: LoginComponent },
-  { path: 'subjects', component: SubjectsComponent },
-  { path: 'timetable', component: TimetableComponent },
-  { path: 'user-profile', component: UserProfileComponent },
+  { path: 'subjects', component: SubjectsComponent, title: 'Subjects' },
+  { path: 'timetable', component: TimetableComponent, title: 'Timetable' },
+  {
+    path: 'user-profile',
+    component: UserProfileComponent,
+    title: 'User Profile',
+  },
   {
     path: 'subject/:id',
     component: SubjectComponent,
+    title: 'Subject',
     children: [
-      { path: 'attendace', component: AttendanceComponent },
-      { path: 'files', component: FilesComponent },
-      { path: 'general', component: GeneralComponent },
-      { path: 'grades', component: GradesComponent },
-      { path: 'tasks', component: TasksComponent },
-      { path: 'thread', component: ThreadComponent },
+      {
+        path: 'attendace',
+        component: AttendanceComponent,
+        title: 'Attendance',
+      },
+      { path: 'files', component: FilesComponent, title: 'Files' },
+      { path: 'general', component: GeneralComponent, title: 'General' },
+      { path: 'grades', component: GradesComponent, title: 'Grades' },
+      { path: 'tasks', component: TasksComponent, title: 'Tasks' },
+      { path: 'thread', component: ThreadComponent, title: 'Thread' },
     ],
   },
 ];
