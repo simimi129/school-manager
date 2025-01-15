@@ -1,10 +1,10 @@
-<div class="color"></div>
+<div class="color" [ngStyle]="{ background: color() }"></div>
 <div class="header">
   <div class="img"></div>
   <div class="avatar"></div>
 </div>
 <div class="body">
-  <div class="title">Math</div>
-  <div class="code">MTH-314</div>
+  <div class="title">{{ title() }}</div>
+  <div class="code">{{ code() }}</div>
 </div>
-<div class="footer">GPA: 3.14</div>
+<div class="footer">GPA: {{ gpa() }}</div>

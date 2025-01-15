@@ -1,7 +1,40 @@
 :host {
-  background: seagreen;
+  position: relative;
+  background: #ffffff;
   border-radius: 12px;
-  padding: 10px;
+  padding-left: 14px;
   width: 300px;
-  aspect-ratio: 16/9;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.color {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 100%;
+}
+
+.header {
+  height: 90px;
+}
+
+.body {
+  flex-grow: 1;
+  padding: 8px;
+
+  .title {
+    font-weight: 600;
+  }
+
+  .code {
+    opacity: 0.7;
+  }
+}
+
+.footer {
+  padding: 8px;
+  text-align: right;
 }
