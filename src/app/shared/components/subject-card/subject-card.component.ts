@@ -1,5 +1,6 @@
 import { NgStyle } from '@angular/common';
 import { Component, input } from '@angular/core';
+import { SubjectModel } from '../../../pages/subjects/data-access/models/subjects.interfaces';
 
 @Component({
   selector: 'app-subject-card',
@@ -8,8 +9,5 @@ import { Component, input } from '@angular/core';
   styleUrl: './subject-card.component.scss',
 })
 export class SubjectCardComponent {
-  title = input('');
-  code = input('');
-  gpa = input();
-  color = input('');
+  subject = input({} as SubjectModel);
 }

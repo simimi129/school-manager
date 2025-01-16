@@ -3,7 +3,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { TimetableComponent } from './pages/timetable/timetable.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { ChatComponent } from './pages/chat/chat.component';
-import { SubjectsComponent } from './pages/subjects/subjects.component';
+import { SubjectsComponent } from './pages/subjects/subjects.page';
 import { ClassRoomComponent } from './pages/class-room/class-room.component';
 import { ChatRoomComponent } from './pages/chat/chat-room/chat-room.component';
 import { SubjectComponent } from './pages/subject/subject.component';

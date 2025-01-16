@@ -1,10 +1,10 @@
-<div class="color" [ngStyle]="{ background: color() }"></div>
+<div class="color" [ngStyle]="{ background: subject().color }"></div>
 <div class="header">
   <div class="img"></div>
   <div class="avatar"></div>
 </div>
 <div class="body">
-  <div class="title">{{ title() }}</div>
-  <div class="code">{{ code() }}</div>
+  <div class="title">{{ subject().title }}</div>
+  <div class="code">{{ subject().code }}</div>
 </div>
-<div class="footer">GPA: {{ gpa() }}</div>
+<div class="footer">GPA: {{ subject().gpa }}</div>
