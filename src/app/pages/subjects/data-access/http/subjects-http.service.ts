@@ -11,6 +11,6 @@ export class SubjectsHttpService extends GenericHttpService<
   SubjectModel
 > {
   constructor() {
-    super('/subjects', 'http://localhost:4200', new SubjectsModelAdapter());
+    super('/subjects', new SubjectsModelAdapter());
   }
 }

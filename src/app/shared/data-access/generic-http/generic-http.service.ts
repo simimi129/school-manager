@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, inject, Injectable } from '@angular/core';
 import { ModelAdapter } from '../model-adapter/model-adapter.interface';
 import { map, Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +14,8 @@ export class GenericHttpService<D, M> {
 
   constructor(
     @Inject(String) private endpoint: string,
-    @Inject(String) private baseUrl: string,
-    @Inject('ModelAdapter') private adapter: ModelAdapter<D, M>
+    @Inject('ModelAdapter') private adapter: ModelAdapter<D, M>,
+    @Inject(String) private baseUrl: string = environment.baseUrl
   ) {
     this.url = `${this.baseUrl}/api${this.endpoint}`;
   }
