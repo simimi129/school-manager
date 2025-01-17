@@ -10,7 +10,7 @@ import {
   CdkDragHandle,
 } from '@angular/cdk/drag-drop';
 import { SubjectModel } from './data-access/models/subjects.interfaces';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
@@ -32,17 +32,41 @@ export class SubjectsComponent implements OnInit {
   subjects$ = this.subjectsForDragAndDrop.asObservable();
 
   ngOnInit(): void {
-    this.subjects$ = this.subjectsHttpService.get().pipe(
-      tap((subjects: SubjectModel[]) =>
-        this.subjectsForDragAndDrop.next(subjects)
-      ),
-      takeUntilDestroyed(this.destroyRef)
-    );
+    const subjectsOrder = localStorage.getItem('subjectsOrder');
+    let subjectsFromLocalStorage = [] as SubjectModel[];
+    if (subjectsOrder) subjectsFromLocalStorage = JSON.parse(subjectsOrder);
+
+    this.subjectsHttpService
+      .get()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((subjects: SubjectModel[]) => {
+        if (this.areArraysEqual(subjectsFromLocalStorage, subjects)) {
+          this.subjectsForDragAndDrop.next(subjectsFromLocalStorage);
+        } else {
+          this.subjectsForDragAndDrop.next(subjects);
+        }
+      });
   }
 
   drop(event: CdkDragDrop<SubjectModel[] | null>) {
     const items = this.subjectsForDragAndDrop.getValue();
     moveItemInArray(items, event.previousIndex, event.currentIndex);
     this.subjectsForDragAndDrop.next(items);
+    localStorage.setItem('subjectsOrder', JSON.stringify(items));
+  }
+
+  areArraysEqual<T>(arr1: T[], arr2: T[]): boolean {
+    if (arr1.length !== arr2.length) {
+      return false;
+    }
+
+    return (
+      arr1.every((obj1) =>
+        arr2.some((obj2) => JSON.stringify(obj1) === JSON.stringify(obj2))
+      ) &&
+      arr2.every((obj2) =>
+        arr1.some((obj1) => JSON.stringify(obj2) === JSON.stringify(obj1))
+      )
+    );
   }
 }
