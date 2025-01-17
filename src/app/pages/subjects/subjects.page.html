@@ -5,6 +5,19 @@
   (cdkDropListDropped)="drop($event)"
 >
   @for (subject of subjects$ | async; track subject.id) {
-  <app-subject-card [subject]="subject" cdkDrag />
+  <app-subject-card [subject]="subject" cdkDrag>
+    <div class="dragger" cdkDragHandle>
+      <div class="dragger-col">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div class="dragger-col">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+  </app-subject-card>
   }
 </div>

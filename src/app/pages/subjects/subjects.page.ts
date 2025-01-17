@@ -7,6 +7,7 @@ import {
   CdkDrag,
   CdkDropList,
   moveItemInArray,
+  CdkDragHandle,
 } from '@angular/cdk/drag-drop';
 import { SubjectModel } from './data-access/models/subjects.interfaces';
 import { BehaviorSubject, tap } from 'rxjs';
@@ -14,7 +15,13 @@ import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-subjects',
-  imports: [SubjectCardComponent, AsyncPipe, CdkDropList, CdkDrag],
+  imports: [
+    SubjectCardComponent,
+    AsyncPipe,
+    CdkDropList,
+    CdkDrag,
+    CdkDragHandle,
+  ],
   templateUrl: './subjects.page.html',
   styleUrl: './subjects.page.scss',
 })
