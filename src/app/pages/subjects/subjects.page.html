@@ -1,3 +1,10 @@
-@for (subject of subjects | async; track subject.id) {
-<app-subject-card [subject]="subject" />
-}
+<div
+  class="subjects-container"
+  cdkDropList
+  cdkDropListOrientation="mixed"
+  (cdkDropListDropped)="drop($event)"
+>
+  @for (subject of subjects$ | async; track subject.id) {
+  <app-subject-card [subject]="subject" cdkDrag />
+  }
+</div>
