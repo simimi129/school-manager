@@ -3,9 +3,15 @@
   cdkDropList
   cdkDropListOrientation="mixed"
   (cdkDropListDropped)="drop($event)"
+  [ngClass]="{ 'dragging': isDragging }"
 >
   @for (subject of subjects$ | async; track subject.id) {
-  <app-subject-card [subject]="subject" cdkDrag>
+  <app-subject-card
+    [subject]="subject"
+    cdkDrag
+    (cdkDragStarted)="onDragStarted()"
+    (cdkDragEnded)="onDragEnded()"
+  >
     <div class="dragger" cdkDragHandle>
       <div class="dragger-col">
         <div class="dot"></div>

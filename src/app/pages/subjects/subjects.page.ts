@@ -11,7 +11,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { SubjectModel } from './data-access/models/subjects.interfaces';
 import { BehaviorSubject } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-subjects',
@@ -21,6 +21,7 @@ import { AsyncPipe } from '@angular/common';
     CdkDropList,
     CdkDrag,
     CdkDragHandle,
+    NgClass,
   ],
   templateUrl: './subjects.page.html',
   styleUrl: './subjects.page.scss',
@@ -30,6 +31,7 @@ export class SubjectsComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   subjectsForDragAndDrop = new BehaviorSubject([] as SubjectModel[]);
   subjects$ = this.subjectsForDragAndDrop.asObservable();
+  isDragging = false;
 
   ngOnInit(): void {
     const subjectsOrder = localStorage.getItem('subjectsOrder');
@@ -53,6 +55,14 @@ export class SubjectsComponent implements OnInit {
     moveItemInArray(items, event.previousIndex, event.currentIndex);
     this.subjectsForDragAndDrop.next(items);
     localStorage.setItem('subjectsOrder', JSON.stringify(items));
+  }
+
+  onDragStarted() {
+    this.isDragging = true;
+  }
+
+  onDragEnded() {
+    this.isDragging = false;
   }
 
   areArraysEqual<T>(arr1: T[], arr2: T[]): boolean {
