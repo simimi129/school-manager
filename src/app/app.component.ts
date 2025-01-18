@@ -25,7 +25,12 @@ export class AppComponent {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  title = this.router.events.pipe(
+  isNavigationVisible$ = this.router.events.pipe(
+    filter((e) => e instanceof NavigationEnd),
+    map(() => this.route.firstChild?.snapshot.url.toString() !== 'login')
+  );
+
+  title$ = this.router.events.pipe(
     filter((e) => e instanceof NavigationEnd),
     map(() => this.route.firstChild?.snapshot.title)
   );

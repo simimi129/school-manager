@@ -1,4 +1,8 @@
+@if (isNavigationVisible$ | async) {
 <app-navigation />
-<app-page-container-with-title [title]="title | async">
+<app-page-container-with-title [title]="title$ | async">
   <router-outlet></router-outlet>
 </app-page-container-with-title>
+} @else {
+<router-outlet></router-outlet>
+}
