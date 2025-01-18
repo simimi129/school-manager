@@ -1,7 +1,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  background: #586054;
+  background: var(--secondary-bg-color);
   width: min-content;
   padding: 20px;
 }

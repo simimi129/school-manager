@@ -1,5 +1,10 @@
+:root {
+  --bg-color: #ece1c8;
+  --secondary-bg-color: #586054;
+}
+
 html {
-  box-sizing: border-box;
+  box-sizing: border-box !important;
 }
 
 * {
@@ -11,4 +16,12 @@ html,
 body {
   height: 100%;
   font-family: "Inter", sans-serif;
+}
+
+input,
+mat-form-field,
+mat-error,
+mat-label,
+button {
+  font-family: "Inter", sans-serif !important;
 }
