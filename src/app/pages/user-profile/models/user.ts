@@ -1,7 +1,7 @@
 import { AddressModel } from './address.interface';
 import { NameModel } from './name.interface';
 
-export interface UserModel {
+export interface IUser {
   id: number | null;
   name: NameModel;
   email: string;
@@ -12,7 +12,7 @@ export interface UserModel {
   fullName: string;
 }
 
-export class User implements UserModel {
+export class User implements IUser {
   constructor(
     public id: number | null = null,
     public name = { firstName: '', lastName: '' } as NameModel,
@@ -23,7 +23,7 @@ export class User implements UserModel {
     public picture = ''
   ) {}
 
-  static Build(user: UserModel): User {
+  static Build(user: IUser): User {
     if (!user) {
       return new User();
     }
