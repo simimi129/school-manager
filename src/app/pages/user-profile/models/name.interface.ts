@@ -1,5 +1,5 @@
 export interface NameModel {
-  first: string;
-  middle: string;
-  last: string;
+  firstName: string;
+  middleName?: string;
+  lastName: string;
 }
