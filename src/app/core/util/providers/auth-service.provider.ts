@@ -1,9 +1,10 @@
 import { Provider } from '@angular/core';
 import { AuthService } from '../../auth/services/auth.service';
 
-export function provideAuthService(authService: AuthService): Provider {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function provideAuthService(authService: any): Provider {
   return {
     provide: AuthService,
-    useValue: authService,
+    useClass: authService,
   };
 }
