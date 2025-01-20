@@ -60,8 +60,10 @@ export abstract class AuthService implements IAuthService {
   }
 
   login(email: string, password: string): Observable<void> {
+    this.clearToken();
     const loginResponse$ = this.authProvider(email, password).pipe(
       map((value) => {
+        this.setToken(value.accessToken);
         const token = jwtDecode(value.accessToken);
         return this.transformJwtToken(token);
       }),
@@ -80,8 +82,23 @@ export abstract class AuthService implements IAuthService {
     return loginResponse$;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   logout(clearToken?: boolean): void {
+    if (clearToken) {
+      this.clearToken();
+    }
     setTimeout(() => this.authStatus$.next(defaultAuthStatus), 0);
+  }
+
+  // TODO: put avaialble cache key names into an enum to avoid mistypes
+  protected setToken(jwt: string) {
+    this.cache.setItem('jwt', jwt);
+  }
+
+  getToken(): string {
+    return this.cache.getItem('jwt') ?? '';
+  }
+
+  protected clearToken() {
+    this.cache.removeItem('jwt');
   }
 }
