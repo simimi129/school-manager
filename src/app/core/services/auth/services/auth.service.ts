@@ -18,7 +18,7 @@ import { CacheService } from '../../cache/cache.service';
 export interface IAuthStatus {
   isAuthenticated: boolean;
   role: Role;
-  userId: string;
+  userId: string | null;
 }
 
 export interface IServerAuthResponse {

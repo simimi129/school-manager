@@ -1,26 +1,29 @@
+import { Role } from '../../../core/services/auth/models/auth.enum';
 import { AddressModel } from './address.interface';
 import { NameModel } from './name.interface';
 
 export interface IUser {
-  id: number | null;
+  _id: string | null;
   name: NameModel;
   email: string;
   phone: string;
   address: AddressModel;
   dateOfBirth: Date | string | null;
   picture: string;
-  fullName: string;
+  role: Role;
+  fullName?: string;
 }
 
 export class User implements IUser {
   constructor(
-    public id: number | null = null,
+    public _id: string | null = null,
     public name = { firstName: '', lastName: '' } as NameModel,
     public email = '',
     public phone = '',
     public address = { street: '', city: '', zip: '' } as AddressModel,
     public dateOfBirth: Date | string | null = null,
-    public picture = ''
+    public picture = '',
+    public role = Role.None
   ) {}
 
   static Build(user: IUser): User {
@@ -29,7 +32,7 @@ export class User implements IUser {
     }
 
     return new User(
-      user.id,
+      user._id,
       user.name,
       user.email,
       user.phone,
@@ -37,7 +40,8 @@ export class User implements IUser {
       typeof user.dateOfBirth === 'string'
         ? new Date(user.dateOfBirth)
         : user.dateOfBirth,
-      user.picture
+      user.picture,
+      user.role
     );
   }
 
