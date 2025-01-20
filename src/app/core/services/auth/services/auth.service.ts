@@ -9,9 +9,9 @@ import {
   throwError,
 } from 'rxjs';
 import { Role } from '../models/auth.enum';
-import { User, IUser } from '../../../pages/user-profile/models/user';
 import { jwtDecode } from 'jwt-decode';
-import { transformError } from '../../util/common/common';
+import { IUser, User } from '../../../../pages/user-profile/models/user';
+import { transformError } from '../../../util/common/common';
 
 export interface IAuthStatus {
   isAuthenticated: boolean;
