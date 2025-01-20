@@ -5,6 +5,7 @@ import {
   map,
   mergeMap,
   Observable,
+  pipe,
   tap,
   throwError,
 } from 'rxjs';
@@ -53,7 +54,24 @@ export abstract class AuthService implements IAuthService {
   );
   currentUser$ = new BehaviorSubject<IUser>(new User());
 
+  private getAndUpdateUserIfAuthenticated = pipe(
+    filter((status: IAuthStatus) => status.isAuthenticated),
+    mergeMap(() => this.getCurrentUser()),
+    map((user: IUser) => this.currentUser$.next(user)),
+    catchError(transformError)
+  );
+
+  protected readonly resumeCurrentUser$ = this.authStatus$.pipe(
+    this.getAndUpdateUserIfAuthenticated
+  );
+
   constructor() {
+    if (this.hasExpiredToken()) {
+      this.logout(true);
+    } else {
+      this.authStatus$.next(this.getAuthStatusFromToken());
+      setTimeout(() => this.resumeCurrentUser$.subscribe(), 0);
+    }
     this.authStatus$.pipe(
       tap((authStatus) => this.cache.setItem('authStatus', authStatus))
     );
@@ -64,14 +82,10 @@ export abstract class AuthService implements IAuthService {
     const loginResponse$ = this.authProvider(email, password).pipe(
       map((value) => {
         this.setToken(value.accessToken);
-        const token = jwtDecode(value.accessToken);
-        return this.transformJwtToken(token);
+        return this.getAuthStatusFromToken();
       }),
       tap((status) => this.authStatus$.next(status)),
-      filter((status: IAuthStatus) => status.isAuthenticated),
-      mergeMap(() => this.getCurrentUser()),
-      map((user) => this.currentUser$.next(user)),
-      catchError(transformError)
+      this.getAndUpdateUserIfAuthenticated
     );
     loginResponse$.subscribe({
       error: (err) => {
@@ -100,5 +114,19 @@ export abstract class AuthService implements IAuthService {
 
   protected clearToken() {
     this.cache.removeItem('jwt');
+  }
+
+  protected hasExpiredToken(): boolean {
+    const jwt = this.getToken();
+    if (jwt) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const payload = jwtDecode(jwt) as any;
+      return Date.now() >= payload.exp * 1000;
+    }
+    return true;
+  }
+
+  protected getAuthStatusFromToken(): IAuthStatus {
+    return this.transformJwtToken(jwtDecode(this.getToken()));
   }
 }

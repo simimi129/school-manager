@@ -6,12 +6,13 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { MockInterceptor } from './shared/data-access/generic-http/interceptors/mock.interceptor';
 import { provideAuthService } from './core/util/providers/auth-service.provider';
 import { InMemroyAuthService } from './core/services/auth/services/in-memroy-auth.service';
+import { AuthInterceptor } from './core/services/auth/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([MockInterceptor])),
+    provideHttpClient(withInterceptors([MockInterceptor, AuthInterceptor])),
     provideAuthService(InMemroyAuthService),
   ],
 };
