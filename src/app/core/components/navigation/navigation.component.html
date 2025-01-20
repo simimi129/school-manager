@@ -31,7 +31,11 @@
     }
   </a>
 </div>
-<button mat-icon-button [matTooltip]="isOpen ? '' : 'Chat'">
+<button
+  mat-icon-button
+  [matTooltip]="isOpen ? '' : 'Logout'"
+  (click)="logout()"
+>
   <mat-icon>logout</mat-icon>
   @if (isOpen) {
   <span> logout </span>
