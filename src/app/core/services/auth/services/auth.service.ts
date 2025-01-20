@@ -12,6 +12,8 @@ import { Role } from '../models/auth.enum';
 import { jwtDecode } from 'jwt-decode';
 import { IUser, User } from '../../../../pages/user-profile/models/user';
 import { transformError } from '../../../util/common/common';
+import { inject } from '@angular/core';
+import { CacheService } from '../../cache/cache.service';
 
 export interface IAuthStatus {
   isAuthenticated: boolean;
@@ -37,14 +39,25 @@ export interface IAuthService {
 }
 
 export abstract class AuthService implements IAuthService {
+  protected readonly cache = inject(CacheService);
+
   protected abstract authProvider(
     email: string,
     password: string
   ): Observable<IServerAuthResponse>;
   protected abstract transformJwtToken(token: unknown): IAuthStatus;
   protected abstract getCurrentUser(): Observable<User>;
-  authStatus$ = new BehaviorSubject<IAuthStatus>(defaultAuthStatus);
+
+  authStatus$ = new BehaviorSubject<IAuthStatus>(
+    this.cache.getItem('authStatus') ?? defaultAuthStatus
+  );
   currentUser$ = new BehaviorSubject<IUser>(new User());
+
+  constructor() {
+    this.authStatus$.pipe(
+      tap((authStatus) => this.cache.setItem('authStatus', authStatus))
+    );
+  }
 
   login(email: string, password: string): Observable<void> {
     const loginResponse$ = this.authProvider(email, password).pipe(

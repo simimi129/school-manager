@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class CacheService {
-  protected getItem<T>(key: string): T | null {
+  getItem<T>(key: string): T | null {
     const data = localStorage.getItem(key);
     if (data != null) {
       try {
@@ -17,18 +17,18 @@ export class CacheService {
     return null;
   }
 
-  protected setItem(key: string, data: object | string) {
+  setItem(key: string, data: object | string) {
     if (typeof data === 'string') {
       localStorage.setItem(key, data);
     }
     localStorage.setItem(key, JSON.stringify(data));
   }
 
-  protected removeItem(key: string) {
+  removeItem(key: string) {
     localStorage.removeItem(key);
   }
 
-  protected clear() {
+  clear() {
     localStorage.clear();
   }
 }

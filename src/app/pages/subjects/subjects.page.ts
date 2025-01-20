@@ -12,6 +12,7 @@ import {
 import { SubjectModel } from './data-access/models/subjects.interfaces';
 import { BehaviorSubject } from 'rxjs';
 import { AsyncPipe, NgClass } from '@angular/common';
+import { CacheService } from '../../core/services/cache/cache.service';
 
 @Component({
   selector: 'app-subjects',
@@ -27,23 +28,23 @@ import { AsyncPipe, NgClass } from '@angular/common';
   styleUrl: './subjects.page.scss',
 })
 export class SubjectsComponent implements OnInit {
-  private subjectsHttpService = inject(SubjectsHttpService);
-  private destroyRef = inject(DestroyRef);
+  private readonly subjectsHttpService = inject(SubjectsHttpService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly cache = inject(CacheService);
   subjectsForDragAndDrop = new BehaviorSubject([] as SubjectModel[]);
   subjects$ = this.subjectsForDragAndDrop.asObservable();
   isDragging = false;
 
   ngOnInit(): void {
-    const subjectsOrder = localStorage.getItem('subjectsOrder');
-    let subjectsFromLocalStorage = [] as SubjectModel[];
-    if (subjectsOrder) subjectsFromLocalStorage = JSON.parse(subjectsOrder);
-
     this.subjectsHttpService
       .get()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((subjects: SubjectModel[]) => {
-        if (this.areArraysEqual(subjectsFromLocalStorage, subjects)) {
-          this.subjectsForDragAndDrop.next(subjectsFromLocalStorage);
+        const subjectsOrder =
+          this.cache.getItem<SubjectModel[]>('subjectsOrder');
+        const subjectsOrderFromCache = subjectsOrder ?? ([] as SubjectModel[]);
+        if (this.areArraysEqual(subjectsOrderFromCache, subjects)) {
+          this.subjectsForDragAndDrop.next(subjectsOrderFromCache);
         } else {
           this.subjectsForDragAndDrop.next(subjects);
         }
@@ -54,7 +55,7 @@ export class SubjectsComponent implements OnInit {
     const items = this.subjectsForDragAndDrop.getValue();
     moveItemInArray(items, event.previousIndex, event.currentIndex);
     this.subjectsForDragAndDrop.next(items);
-    localStorage.setItem('subjectsOrder', JSON.stringify(items));
+    this.cache.setItem('subjectsOrder', items);
   }
 
   onDragStarted() {
@@ -65,6 +66,7 @@ export class SubjectsComponent implements OnInit {
     this.isDragging = false;
   }
 
+  // TODO: move to utils
   areArraysEqual<T>(arr1: T[], arr2: T[]): boolean {
     if (arr1.length !== arr2.length) {
       return false;
