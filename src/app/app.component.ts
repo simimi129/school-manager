@@ -6,9 +6,9 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { NavigationComponent } from './core/components/navigation/navigation.component';
-import { PageContainerWithTitleComponent } from './core/layout/page-container-with-title/page-container-with-title.component';
 import { filter, map } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { PageContainerWithTitleComponent } from './core/components/page-container-with-title/page-container-with-title.component';
 
 @Component({
   selector: 'app-root',
