@@ -4,7 +4,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../core/services/auth/auth.service';
-import { tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -45,11 +44,14 @@ export class LoginComponent implements OnInit {
           this.loginForm.controls.email.value!,
           this.loginForm.controls.password.value!
         )
-        .pipe(
-          tap(() => this.router.navigate([this.redirectUrl])),
-          takeUntilDestroyed(this.destroyRef)
-        )
-        .subscribe();
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            console.log('Login success');
+            this.router.navigate([this.redirectUrl]);
+          },
+          error: (error) => console.log(error),
+        });
     }
   }
 }

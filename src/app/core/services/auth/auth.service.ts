@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { CacheService } from '../cache/cache.service';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { ILoginResponse } from './models/auth';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -11,33 +11,41 @@ export class AuthService {
   private readonly cache = inject(CacheService);
   private readonly http = inject(HttpClient);
 
-  private currentUserSubject = new BehaviorSubject<ILoginResponse | null>(null);
-  public currentUser$: Observable<ILoginResponse | null> =
-    this.currentUserSubject.asObservable();
-
-  constructor() {
-    const user = this.cache.getItem<ILoginResponse>('currentUser');
-    if (user) this.currentUserSubject.next(user);
-  }
-
-  login(username: string, password: string): Observable<ILoginResponse> {
-    return this.http
-      .post<ILoginResponse>(`/login`, { username, password })
-      .pipe(
-        map((user) => {
-          this.cache.setItem('currentUser', user);
-          this.currentUserSubject.next(user);
-          return user;
-        })
-      );
+  login(email: string, password: string): Observable<string> {
+    return this.http.post<string>(`/login`, { email, password }).pipe(
+      tap((token) => {
+        console.log(token);
+        console.log(this.decodeToken(token));
+        this.cache.setItem('token', token);
+      }),
+      catchError((error) => {
+        console.log(error);
+        if (error.status === 401) {
+          console.error('Aurhentication failed: Invalid credentials');
+        } else {
+          console.error('An unexpected error has occured: ', error);
+        }
+        return throwError(() => error);
+      })
+    );
   }
 
   logout(): void {
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
+    localStorage.removeItem('token');
   }
 
   get isLoggedIn(): boolean {
-    return !!this.currentUserSubject.value;
+    return Boolean(this.cache.getItem<string>('token'));
+  }
+
+  // TODO: figure out where to use these 2 methods
+  private decodeToken(token: string): JwtPayload {
+    return jwtDecode<JwtPayload>(token);
+  }
+
+  private isTokenExpired(token: string): boolean {
+    const { exp } = jwtDecode<JwtPayload>(token);
+    if (!exp) return true;
+    return Date.now() >= exp * 1000;
   }
 }

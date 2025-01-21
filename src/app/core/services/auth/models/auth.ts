@@ -1,13 +1,14 @@
 export enum Role {
-  None = 'none',
-  Admin = 'admin',
-  Student = 'student',
-  Teacher = 'teacher',
-  Principal = 'principal',
-  Parent = 'parent',
+  NONE,
+  ADMIN,
+  STUDENT,
+  TEACHER,
+  PRINCIPAL,
+  PARENT,
 }
 
 export interface ILoginResponse {
-  username: string;
-  token: string;
+  acessToken: string;
+  userId: string;
+  role: Role;
 }
