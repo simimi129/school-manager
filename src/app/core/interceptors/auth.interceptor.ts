@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { HttpInterceptorFn } from '@angular/common/http';
-import { CacheService } from '../../cache/cache.service';
+import { CacheService } from '../services/cache/cache.service';
 
 export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
   const cache = inject(CacheService);

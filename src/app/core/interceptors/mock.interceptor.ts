@@ -7,7 +7,7 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { delay, from, map, mergeMap, of, throwError } from 'rxjs';
-import { Role } from '../../../../core/services/auth/models/auth';
+import { Role } from '../services/auth/models/auth';
 import { SignJWT } from 'jose';
 
 const SECRET_KEY = new TextEncoder().encode('mock-secret-key');
