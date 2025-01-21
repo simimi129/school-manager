@@ -13,6 +13,7 @@ import { GeneralComponent } from './pages/subject/pages/general/general.componen
 import { GradesComponent } from './pages/subject/pages/grades/grades.component';
 import { TasksComponent } from './pages/subject/pages/tasks/tasks.component';
 import { ThreadComponent } from './pages/subject/pages/thread/thread.component';
+import { AuthGuard } from './core/services/auth/guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'timetable', pathMatch: 'full' },
@@ -26,20 +27,38 @@ export const routes: Routes = [
         component: ChatRoomComponent,
       },
     ],
+    canActivate: [AuthGuard],
   },
-  { path: 'class-room', component: ClassRoomComponent, title: 'Class Room' },
+  {
+    path: 'class-room',
+    component: ClassRoomComponent,
+    title: 'Class Room',
+    canActivate: [AuthGuard],
+  },
   { path: 'login', component: LoginComponent },
-  { path: 'subjects', component: SubjectsComponent, title: 'Subjects' },
-  { path: 'timetable', component: TimetableComponent, title: 'Timetable' },
+  {
+    path: 'subjects',
+    component: SubjectsComponent,
+    title: 'Subjects',
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'timetable',
+    component: TimetableComponent,
+    title: 'Timetable',
+    canActivate: [AuthGuard],
+  },
   {
     path: 'user-profile',
     component: UserProfileComponent,
     title: 'User Profile',
+    canActivate: [AuthGuard],
   },
   {
     path: 'subject/:id',
     component: SubjectComponent,
     title: 'Subject',
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'attendace',

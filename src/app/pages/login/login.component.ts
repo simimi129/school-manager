@@ -1,11 +1,11 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { AuthService } from '../../core/services/auth/services/auth.service';
-import { combineLatest, filter, tap } from 'rxjs';
-import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth/auth.service';
+import { tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -19,27 +19,37 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private destroyRef = inject(DestroyRef);
 
+  redirectUrl = null;
+
   loginForm = this.formBuilder.group({
-    email: ['', Validators.required, Validators.email],
+    email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
   });
 
+  ngOnInit(): void {
+    this.redirectUrl =
+      this.route.snapshot.queryParams['redirectUrl'] ?? '/timetable';
+  }
+
   login() {
-    this.authService.login('test@test.com', 'password');
-    combineLatest([this.authService.authStatus$, this.authService.currentUser$])
-      .pipe(
-        filter(
-          ([authStatus, user]) => authStatus.isAuthenticated && user._id !== ''
-        ),
-        tap(() => this.router.navigate(['/timetable'])),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe();
+    if (this.loginForm.valid) {
+      this.authService
+        .login(
+          this.loginForm.controls.email.value!,
+          this.loginForm.controls.password.value!
+        )
+        .pipe(
+          tap(() => this.router.navigate([this.redirectUrl])),
+          takeUntilDestroyed(this.destroyRef)
+        )
+        .subscribe();
+    }
   }
 }

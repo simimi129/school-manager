@@ -6,3 +6,8 @@ export enum Role {
   Principal = 'principal',
   Parent = 'parent',
 }
+
+export interface ILoginResponse {
+  username: string;
+  token: string;
+}

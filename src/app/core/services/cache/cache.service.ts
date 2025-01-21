@@ -7,12 +7,7 @@ export class CacheService {
   getItem<T>(key: string): T | null {
     const data = localStorage.getItem(key);
     if (data != null) {
-      try {
-        return JSON.parse(data);
-      } catch (error) {
-        console.error('Parsing error:', error);
-        return null;
-      }
+      return JSON.parse(data);
     }
     return null;
   }

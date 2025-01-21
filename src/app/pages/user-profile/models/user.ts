@@ -1,4 +1,4 @@
-import { Role } from '../../../core/services/auth/models/auth.enum';
+import { Role } from '../../../core/services/auth/models/auth';
 import { AddressModel } from './address.interface';
 import { NameModel } from './name.interface';
 
@@ -26,7 +26,7 @@ export class User implements IUser {
     public role = Role.None
   ) {}
 
-  static Build(user: IUser): User {
+  static Build(user?: IUser): User {
     if (!user) {
       return new User();
     }
