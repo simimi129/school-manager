@@ -52,7 +52,7 @@ export class AuthService {
     return jwtDecode<JwtPayload>(token);
   }
 
-  private isTokenExpired(token: string): boolean {
+  public isTokenExpired(token: string): boolean {
     const { exp } = jwtDecode<JwtPayload>(token);
     if (!exp) return true;
     return Date.now() >= exp * 1000;
