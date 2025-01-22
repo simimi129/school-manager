@@ -8,6 +8,7 @@ export const AuthGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   if (authService.isTokenValid()) {
+    // TODO: remove next line
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const user: any = authService.decodeToken();
     const requiredRoles = (route.data['roles'] as Role[]) ?? ([] as Role[]);
