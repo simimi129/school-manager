@@ -21,13 +21,13 @@ export const routes: Routes = [
     path: 'chat',
     component: ChatComponent,
     title: 'Chat',
+    canActivate: [AuthGuard],
     children: [
       {
         path: ':id',
         component: ChatRoomComponent,
       },
     ],
-    canActivate: [AuthGuard],
   },
   {
     path: 'class-room',
