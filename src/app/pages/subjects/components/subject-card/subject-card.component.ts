@@ -1,6 +1,6 @@
 import { NgStyle } from '@angular/common';
 import { Component, input } from '@angular/core';
-import { SubjectModel } from '../../../pages/subjects/data-access/models/subjects.interfaces';
+import { SubjectModel } from '../../data-access/models/subjects.interfaces';
 
 @Component({
   selector: 'app-subject-card',

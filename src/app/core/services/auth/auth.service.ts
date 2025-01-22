@@ -3,6 +3,7 @@ import { CacheService } from '../cache/cache.service';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -10,32 +11,26 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
 export class AuthService {
   private readonly cache = inject(CacheService);
   private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
 
   constructor() {
-    const token = this.cache.getItem<string>('token');
-    if (token && !this.isTokenExpired(token)) {
+    if (this.isTokenValid()) {
       // TODO: set user
     } else {
       this.logout();
     }
 
     setInterval(() => {
-      const token = localStorage.getItem('token');
-      if (token && this.isTokenExpired(token)) {
-        this.logout();
-      }
+      this.logoutIfTokenExpired();
     }, 60000);
   }
 
   login(email: string, password: string): Observable<string> {
     return this.http.post<string>(`/login`, { email, password }).pipe(
       tap((token) => {
-        console.log(token);
-        console.log(this.decodeToken(token));
         this.cache.setItem('token', token);
       }),
       catchError((error) => {
-        console.log(error);
         if (error.status === 401) {
           console.error('Aurhentication failed: Invalid credentials');
         } else {
@@ -46,22 +41,37 @@ export class AuthService {
     );
   }
 
-  logout(): void {
-    localStorage.removeItem('token');
+  logoutIfTokenExpired() {
+    const token = this.getToken();
+    if (token && this.isTokenExpired(token)) {
+      this.logout();
+    }
   }
 
-  get isLoggedIn(): boolean {
-    return Boolean(this.cache.getItem<string>('token'));
+  isTokenValid(): boolean {
+    const token = this.getToken();
+    return !!token && !this.isTokenExpired(token);
   }
 
-  // TODO: figure out where to use these 2 methods
-  private decodeToken(token: string): JwtPayload {
-    return jwtDecode<JwtPayload>(token);
+  logout(redirectUrl?: string): void {
+    const url = redirectUrl
+      ? [['/login'], { queryParams: redirectUrl }]
+      : ['/login'];
+    this.cache.removeItem('token');
+    this.router.navigate(url);
   }
 
-  public isTokenExpired(token: string): boolean {
-    const { exp } = jwtDecode<JwtPayload>(token);
+  getToken() {
+    return this.cache.getItem<string>('token');
+  }
+
+  private isTokenExpired(token: string): boolean {
+    const { exp } = this.decodeToken(token);
     if (!exp) return true;
     return Date.now() >= exp * 1000;
+  }
+
+  private decodeToken(token: string): JwtPayload {
+    return jwtDecode<JwtPayload>(token);
   }
 }

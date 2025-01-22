@@ -1,3 +1,9 @@
+export interface IAuthStatus {
+  token: string;
+  userId: string;
+  role: Role;
+}
+
 export enum Role {
   NONE,
   ADMIN,
@@ -5,10 +11,4 @@ export enum Role {
   TEACHER,
   PRINCIPAL,
   PARENT,
-}
-
-export interface ILoginResponse {
-  acessToken: string;
-  userId: string;
-  role: Role;
 }
