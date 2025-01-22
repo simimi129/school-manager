@@ -11,6 +11,15 @@ export class AuthService {
   private readonly cache = inject(CacheService);
   private readonly http = inject(HttpClient);
 
+  constructor() {
+    const token = this.cache.getItem<string>('token');
+    if (token && !this.isTokenExpired(token)) {
+      // TODO: set user
+    } else {
+      this.logout();
+    }
+  }
+
   login(email: string, password: string): Observable<string> {
     return this.http.post<string>(`/login`, { email, password }).pipe(
       tap((token) => {
