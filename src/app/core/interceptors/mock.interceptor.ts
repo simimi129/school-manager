@@ -20,7 +20,7 @@ export const MockInterceptor: HttpInterceptorFn = (
   if (req.url.endsWith('/login') && req.method === 'POST') {
     if (req.body.email === 'test@test.com' && req.body.password === 'test') {
       return from(
-        new SignJWT({ userId: '123', role: Role.ADMIN })
+        new SignJWT({ userId: '123', roles: [Role.ADMIN] })
           .setProtectedHeader({ alg: 'HS256' })
           .setIssuedAt()
           .setExpirationTime('1h')

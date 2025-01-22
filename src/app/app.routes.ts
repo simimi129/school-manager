@@ -14,6 +14,8 @@ import { GradesComponent } from './pages/subject/pages/grades/grades.component';
 import { TasksComponent } from './pages/subject/pages/tasks/tasks.component';
 import { ThreadComponent } from './pages/subject/pages/thread/thread.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import { Role } from './core/services/auth/models/auth';
+import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'timetable', pathMatch: 'full' },
@@ -41,6 +43,7 @@ export const routes: Routes = [
     component: SubjectsComponent,
     title: 'Subjects',
     canActivate: [AuthGuard],
+    data: { roles: [Role.STUDENT, Role.TEACHER, Role.ADMIN] },
   },
   {
     path: 'timetable',
@@ -71,5 +74,10 @@ export const routes: Routes = [
       { path: 'tasks', component: TasksComponent, title: 'Tasks' },
       { path: 'thread', component: ThreadComponent, title: 'Thread' },
     ],
+  },
+  {
+    path: 'unauthorized',
+    component: UnauthorizedComponent,
+    title: 'Unauthorized',
   },
 ];

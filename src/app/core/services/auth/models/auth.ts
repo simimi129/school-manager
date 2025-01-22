@@ -1,7 +1,7 @@
 export interface IAuthStatus {
   token: string;
   userId: string;
-  role: Role;
+  roles: Role[];
 }
 
 export enum Role {

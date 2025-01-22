@@ -42,15 +42,13 @@ export class AuthService {
   }
 
   logoutIfTokenExpired() {
-    const token = this.getToken();
-    if (token && this.isTokenExpired(token)) {
+    if (this.isTokenExpired()) {
       this.logout();
     }
   }
 
   isTokenValid(): boolean {
-    const token = this.getToken();
-    return !!token && !this.isTokenExpired(token);
+    return !this.isTokenExpired();
   }
 
   logout(redirectUrl?: string): void {
@@ -65,13 +63,15 @@ export class AuthService {
     return this.cache.getItem<string>('token');
   }
 
-  private isTokenExpired(token: string): boolean {
-    const { exp } = this.decodeToken(token);
+  private isTokenExpired(): boolean {
+    const { exp } = this.decodeToken();
     if (!exp) return true;
     return Date.now() >= exp * 1000;
   }
 
-  private decodeToken(token: string): JwtPayload {
-    return jwtDecode<JwtPayload>(token);
+  public decodeToken(): JwtPayload {
+    const token = this.getToken();
+    if (token) return jwtDecode<JwtPayload>(token);
+    return {} as JwtPayload;
   }
 }
