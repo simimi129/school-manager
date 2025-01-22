@@ -1,5 +1,4 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { SubjectCardComponent } from '../../shared/components/subject-card/subject-card.component';
 import { SubjectsHttpService } from './data-access/http/subjects-http.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
@@ -13,6 +12,7 @@ import { SubjectModel } from './data-access/models/subjects.interfaces';
 import { BehaviorSubject } from 'rxjs';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { CacheService } from '../../core/services/cache/cache.service';
+import { SubjectCardComponent } from './components/subject-card/subject-card.component';
 
 @Component({
   selector: 'app-subjects',
