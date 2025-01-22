@@ -18,6 +18,13 @@ export class AuthService {
     } else {
       this.logout();
     }
+
+    setInterval(() => {
+      const token = localStorage.getItem('token');
+      if (token && this.isTokenExpired(token)) {
+        this.logout();
+      }
+    }, 60000);
   }
 
   login(email: string, password: string): Observable<string> {

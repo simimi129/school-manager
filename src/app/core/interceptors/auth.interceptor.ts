@@ -8,7 +8,7 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
 
   const token = cache.getItem<string>('token');
-  if (token && authService.isTokenExpired(token)) {
+  if (token && !authService.isTokenExpired(token)) {
     req = req.clone({
       setHeaders: { Authorization: `Bearer ${token}` },
     });
