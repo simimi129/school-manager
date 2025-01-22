@@ -6,10 +6,11 @@ import {
   HttpRequest,
   HttpResponse,
 } from '@angular/common/http';
-import { delay, from, map, mergeMap, of, throwError } from 'rxjs';
+import { catchError, delay, from, map, mergeMap, of, throwError } from 'rxjs';
 import { Role } from '../services/auth/models/auth';
-import { SignJWT } from 'jose';
+import { jwtVerify, SignJWT } from 'jose';
 
+// TODO: where is it by best practice?
 const SECRET_KEY = new TextEncoder().encode('mock-secret-key');
 
 export const MockInterceptor: HttpInterceptorFn = (
@@ -19,18 +20,24 @@ export const MockInterceptor: HttpInterceptorFn = (
 ) => {
   if (req.url.endsWith('/login') && req.method === 'POST') {
     if (req.body.email === 'test@test.com' && req.body.password === 'test') {
-      return from(
-        new SignJWT({ userId: '123', roles: [Role.ADMIN] })
-          .setProtectedHeader({ alg: 'HS256' })
-          .setIssuedAt()
-          .setExpirationTime('1h')
-          .sign(SECRET_KEY)
-      ).pipe(
-        mergeMap((token) => {
+      const tokenPromise = new SignJWT({ userId: '123', roles: [Role.ADMIN] })
+        .setProtectedHeader({ alg: 'HS256' })
+        .setIssuedAt()
+        .setExpirationTime('1h')
+        .sign(SECRET_KEY);
+
+      const refershTokenPromise = new SignJWT({ type: 'refresh' })
+        .setProtectedHeader({ alg: 'HS256' })
+        .setIssuedAt()
+        .setExpirationTime('7d')
+        .sign(SECRET_KEY);
+
+      return from(Promise.all([tokenPromise, refershTokenPromise])).pipe(
+        mergeMap(([token, refreshToken]) => {
           return of(
             new HttpResponse({
               status: 200,
-              body: token,
+              body: { token, refreshToken },
             })
           ).pipe(delay(500));
         })
@@ -45,6 +52,61 @@ export const MockInterceptor: HttpInterceptorFn = (
           })
       ).pipe(delay(500));
     }
+  } else if (req.url.endsWith('/refresh') && req.method === 'POST') {
+    const refreshToken = req.body.refreshToken;
+
+    if (!refreshToken) {
+      return throwError(
+        () =>
+          new HttpErrorResponse({
+            status: 401,
+            statusText: 'Unauthorized',
+            error: { message: 'No refresh token provided' },
+          })
+      ).pipe(delay(500));
+    }
+
+    return from(jwtVerify(refreshToken, SECRET_KEY)).pipe(
+      mergeMap(() => {
+        const newAccessTokenPromise = new SignJWT({
+          username: 'test',
+          roles: ['admin', 'user'],
+        })
+          .setProtectedHeader({ alg: 'HS256' })
+          .setIssuedAt()
+          .setExpirationTime('1h')
+          .sign(SECRET_KEY);
+
+        const newRefreshTokenPromise = new SignJWT({ type: 'refresh' })
+          .setProtectedHeader({ alg: 'HS256' })
+          .setIssuedAt()
+          .setExpirationTime('7d')
+          .sign(SECRET_KEY);
+
+        return from(
+          Promise.all([newAccessTokenPromise, newRefreshTokenPromise])
+        ).pipe(
+          mergeMap(([newAccessToken, newRefreshToken]) => {
+            return of(
+              new HttpResponse({
+                status: 200,
+                body: { token: newAccessToken, refreshToken: newRefreshToken },
+              })
+            ).pipe(delay(500));
+          })
+        );
+      }),
+      catchError(() => {
+        return throwError(
+          () =>
+            new HttpErrorResponse({
+              status: 401,
+              statusText: 'Unauthorized',
+              error: { message: 'Invalid or expired refresh token' },
+            })
+        ).pipe(delay(500));
+      })
+    );
   } else {
     const clonedRequest = req.clone({
       url: `assets/api${req.url.split('/api').pop()}.json`,

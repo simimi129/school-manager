@@ -1,5 +1,6 @@
 export interface IAuthStatus {
   token: string;
+  refreshToken: string;
   userId: string;
   roles: Role[];
 }
