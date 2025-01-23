@@ -13,9 +13,9 @@ import { GeneralComponent } from './pages/subject/pages/general/general.componen
 import { GradesComponent } from './pages/subject/pages/grades/grades.component';
 import { TasksComponent } from './pages/subject/pages/tasks/tasks.component';
 import { ThreadComponent } from './pages/subject/pages/thread/thread.component';
-import { AuthGuard } from './core/guards/auth.guard';
 import { Role } from './core/services/auth/models/auth';
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
+import { AuthGuard } from './core/services/auth/guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'timetable', pathMatch: 'full' },
