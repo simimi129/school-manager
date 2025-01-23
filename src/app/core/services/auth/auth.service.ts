@@ -68,10 +68,8 @@ export class AuthService {
     this.cache.removeItem('refreshToken');
     this.authStatus.next({} as IAuthStatus);
     // TODO: reset user
-    const state = this.router.routerState.snapshot;
-    console.log(state);
     this.router.navigate(['/login'], {
-      queryParams: { redirectUrl: state.url },
+      queryParams: { redirectUrl: this.router.routerState.snapshot.url },
     });
   }
 
