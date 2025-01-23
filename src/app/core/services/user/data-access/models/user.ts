@@ -1,8 +1,7 @@
-import { Role } from '../../../core/services/auth/models/auth';
 import { AddressModel } from './address.interface';
 import { NameModel } from './name.interface';
 
-export interface IUser {
+export interface UserDto {
   _id: string | null;
   name: NameModel;
   email: string;
@@ -10,11 +9,20 @@ export interface IUser {
   address: AddressModel;
   dateOfBirth: Date | string | null;
   picture: string;
-  role: Role;
+}
+
+export interface UserModel {
+  _id: string | null;
+  name: NameModel;
+  email: string;
+  phone: string;
+  address: AddressModel;
+  dateOfBirth: Date | string | null;
+  picture: string;
   fullName?: string;
 }
 
-export class User implements IUser {
+export class User implements UserModel {
   constructor(
     public _id: string | null = null,
     public name = { firstName: '', lastName: '' } as NameModel,
@@ -22,11 +30,10 @@ export class User implements IUser {
     public phone = '',
     public address = { street: '', city: '', zip: '' } as AddressModel,
     public dateOfBirth: Date | string | null = null,
-    public picture = '',
-    public role = Role.None
+    public picture = ''
   ) {}
 
-  static Build(user?: IUser): User {
+  static Build(user?: UserModel): User {
     if (!user) {
       return new User();
     }
@@ -40,8 +47,7 @@ export class User implements IUser {
       typeof user.dateOfBirth === 'string'
         ? new Date(user.dateOfBirth)
         : user.dateOfBirth,
-      user.picture,
-      user.role
+      user.picture
     );
   }
 
