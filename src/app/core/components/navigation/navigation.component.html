@@ -1,4 +1,10 @@
-<div class="avatar">{{ (user$ | async)?.name?.firstName }}</div>
+<div
+  class="avatar"
+  routerLink="user-profile"
+  [matTooltip]="
+    isOpen ? '' : 'Logged in as: ' + (user$ | async)?.name?.firstName
+  "
+></div>
 <div class="nav-links">
   <a
     routerLink="timetable"
