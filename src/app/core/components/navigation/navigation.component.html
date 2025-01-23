@@ -1,4 +1,4 @@
-<div class="avatar">asd</div>
+<div class="avatar">{{ (user$ | async)?.name?.firstName }}</div>
 <div class="nav-links">
   <a
     routerLink="timetable"

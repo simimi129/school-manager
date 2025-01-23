@@ -30,6 +30,12 @@ export class GenericHttpService<D, M> {
       );
   }
 
+  public getById(id: string): Observable<M> {
+    return this.http
+      .get<D>(`${this.url}/${id}`)
+      .pipe(map((data) => this.adapter.fromDto(data) as M));
+  }
+
   public post(
     body: M,
     extraHttpRequestParams?: Partial<HttpHeaders>

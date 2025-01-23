@@ -1,0 +1,17 @@
+{
+  "_id": "123",
+  "name": {
+    "firstName": "Simon",
+    "middleName": "Lajos",
+    "lastName": "Szabó"
+  },
+  "email": "simimi129@gmail.com",
+  "phone": "+36306489940",
+  "address": {
+    "street": "street",
+    "city": "city",
+    "zip": "1087"
+  },
+  "dateOfBirth": "1996-12-09",
+  "picture": "string"
+}

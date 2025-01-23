@@ -4,6 +4,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
+import { UserHttpService } from '../../services/user/data-access/http/user-http.service';
+import { switchMap } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-navigation',
@@ -13,6 +16,7 @@ import { AuthService } from '../../services/auth/auth.service';
     MatIconModule,
     RouterModule,
     MatTooltipModule,
+    AsyncPipe,
   ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss',
@@ -20,6 +24,12 @@ import { AuthService } from '../../services/auth/auth.service';
 })
 export class NavigationComponent {
   private authService = inject(AuthService);
+  private userHttpService = inject(UserHttpService);
+
+  user$ = this.authService.authStatus$.pipe(
+    switchMap(({ userId }) => this.userHttpService.getById(userId))
+  );
+
   isOpen = false;
 
   logout() {
