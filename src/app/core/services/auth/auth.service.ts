@@ -63,15 +63,16 @@ export class AuthService {
     return !!token && !this.isTokenExpired(token);
   }
 
-  logout(redirectUrl?: string): void {
-    const url = redirectUrl
-      ? [['/login'], { queryParams: redirectUrl }]
-      : ['/login'];
+  logout(): void {
     this.cache.removeItem('token');
     this.cache.removeItem('refreshToken');
     this.authStatus.next({} as IAuthStatus);
     // TODO: reset user
-    this.router.navigate(url);
+    const state = this.router.routerState.snapshot;
+    console.log(state);
+    this.router.navigate(['/login'], {
+      queryParams: { redirectUrl: state.url },
+    });
   }
 
   getToken() {
