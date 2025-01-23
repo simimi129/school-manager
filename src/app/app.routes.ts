@@ -16,6 +16,7 @@ import { ThreadComponent } from './pages/subject/pages/thread/thread.component';
 import { Role } from './core/services/auth/models/auth';
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
 import { AuthGuard } from './core/services/auth/guards/auth.guard';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'timetable', pathMatch: 'full' },
@@ -80,4 +81,5 @@ export const routes: Routes = [
     component: UnauthorizedComponent,
     title: 'Unauthorized',
   },
+  { path: '**', component: PageNotFoundComponent, title: 'Page Not Found' },
 ];

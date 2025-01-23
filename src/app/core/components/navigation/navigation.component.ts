@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { UserHttpService } from '../../services/user/data-access/http/user-http.service';
 import { switchMap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { SnackbarService } from '../../services/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-navigation',
@@ -25,6 +26,7 @@ import { AsyncPipe } from '@angular/common';
 export class NavigationComponent {
   private authService = inject(AuthService);
   private userHttpService = inject(UserHttpService);
+  private snackbarService = inject(SnackbarService);
 
   user$ = this.authService.authStatus$.pipe(
     switchMap(({ userId }) => this.userHttpService.getById(userId))
