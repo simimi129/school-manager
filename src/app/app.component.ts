@@ -32,6 +32,11 @@ export class AppComponent {
 
   isNavigationVisible$ = this.router.events.pipe(
     filter((e) => e instanceof NavigationEnd),
-    map(() => this.route.firstChild?.snapshot.url.toString() !== 'login')
+    map(() => {
+      return (
+        this.route.firstChild?.snapshot.url.toString() !== 'login' &&
+        this.route.firstChild?.routeConfig?.path !== '**'
+      );
+    })
   );
 }
