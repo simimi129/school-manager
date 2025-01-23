@@ -1,7 +1,7 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth/auth.service';
-import { Role } from '../services/auth/models/auth';
+import { IAuthStatus, Role } from '../services/auth/models/auth';
 
 export const AuthGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
@@ -9,14 +9,12 @@ export const AuthGuard: CanActivateFn = (route, state) => {
 
   const token = authService.getToken();
   if (!!token && authService.isTokenValid()) {
-    // TODO: remove next line
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const user: any = authService.decodeToken(token);
+    const { roles } = authService.decodeToken(token) as IAuthStatus;
     const requiredRoles = (route.data['roles'] as Role[]) ?? ([] as Role[]);
     if (requiredRoles.length === 0) {
       return true;
     }
-    if (requiredRoles.some((role) => user.roles?.includes(role))) {
+    if (requiredRoles.some((role) => roles?.includes(role))) {
       return true;
     }
     router.navigate(['/unauthorized']);

@@ -70,7 +70,7 @@ export const MockInterceptor: HttpInterceptorFn = (
       mergeMap(() => {
         const newAccessTokenPromise = new SignJWT({
           username: 'test',
-          roles: ['admin', 'user'],
+          roles: [Role.ADMIN],
         })
           .setProtectedHeader({ alg: 'HS256' })
           .setIssuedAt()
