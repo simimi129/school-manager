@@ -119,7 +119,8 @@ export const MockInterceptor: HttpInterceptorFn = (
           return event.clone({ body: req.body });
         }
         return event;
-      })
+      }),
+      delay(500)
     );
   }
 };

@@ -1,4 +1,8 @@
-@if (isNavigationVisible$ | async) {
+@if (isLoading$ | async) {
+<div class="spinner-container">
+  <mat-spinner />
+</div>
+} @if (isNavigationVisible$ | async) {
 <app-navigation />
 <app-page-container-with-title [title]="title$ | async">
   <router-outlet></router-outlet>

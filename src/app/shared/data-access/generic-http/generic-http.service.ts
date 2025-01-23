@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, inject, Injectable } from '@angular/core';
 import { ModelAdapter } from '../model-adapter/model-adapter.interface';
-import { map, Observable } from 'rxjs';
+import { finalize, map, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { LoaderService } from '../../../core/services/loader/loader.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ export class GenericHttpService<D, M> {
   protected url;
   defaultHeaders = new HttpHeaders();
   protected readonly http = inject(HttpClient);
+  private readonly loaderService = inject(LoaderService);
 
   constructor(
     @Inject(String) private endpoint: string,
@@ -21,12 +23,14 @@ export class GenericHttpService<D, M> {
   }
 
   public get(extraHttpRequestParams?: Partial<HttpHeaders>): Observable<M[]> {
+    this.loaderService.isLoading = true;
     return this.http
       .get<D[]>(this.url, this.prepareRequestOptions(extraHttpRequestParams))
       .pipe(
         map(
           (data: D[]) => data.map((item) => this.adapter.fromDto(item)) as M[]
-        )
+        ),
+        finalize(() => (this.loaderService.isLoading = false))
       );
   }
 

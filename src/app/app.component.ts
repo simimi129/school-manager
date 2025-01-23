@@ -9,6 +9,8 @@ import { NavigationComponent } from './core/components/navigation/navigation.com
 import { filter, map } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { PageContainerWithTitleComponent } from './core/components/page-container-with-title/page-container-with-title.component';
+import { LoaderService } from './core/services/loader/loader.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +19,7 @@ import { PageContainerWithTitleComponent } from './core/components/page-containe
     NavigationComponent,
     PageContainerWithTitleComponent,
     AsyncPipe,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -24,6 +27,9 @@ import { PageContainerWithTitleComponent } from './core/components/page-containe
 export class AppComponent {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private loaderService = inject(LoaderService);
+
+  isLoading$ = this.loaderService.isLoading$;
 
   title$ = this.router.events.pipe(
     filter((e) => e instanceof NavigationEnd),
