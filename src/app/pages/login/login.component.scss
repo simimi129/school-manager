@@ -4,18 +4,15 @@
   align-items: center;
   width: 100%;
   height: 100%;
-  color: #fff;
 }
 
 form {
-  background: var(--secondary-bg-color);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 20px;
   width: 400px;
-  height: 400px;
   padding: 20px;
   border-radius: 32px;
 
@@ -24,9 +21,7 @@ form {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 16px;
     width: 100%;
     padding: 20px;
-    background: #e9e9e9;
   }
 }
