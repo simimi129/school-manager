@@ -11,6 +11,7 @@ import { AsyncPipe } from '@angular/common';
 import { PageContainerWithTitleComponent } from './core/components/page-container-with-title/page-container-with-title.component';
 import { LoaderService } from './core/services/loader/loader.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { UpcomingEventsComponent } from './core/components/upcoming-events/upcoming-events.component';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     PageContainerWithTitleComponent,
     AsyncPipe,
     MatProgressSpinnerModule,
+    UpcomingEventsComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

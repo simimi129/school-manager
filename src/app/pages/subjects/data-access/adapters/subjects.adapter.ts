@@ -1,6 +1,10 @@
+import { Injectable } from '@angular/core';
 import { ModelAdapter } from '../../../../shared/data-access/model-adapter/model-adapter.interface';
 import { SubjectDto, SubjectModel } from '../models/subjects.interfaces';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class SubjectsModelAdapter
   implements ModelAdapter<SubjectDto, SubjectModel>
 {

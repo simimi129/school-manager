@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, inject, Injectable } from '@angular/core';
-import { ModelAdapter } from '../model-adapter/model-adapter.interface';
 import { finalize, map, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { LoaderService } from '../../../core/services/loader/loader.service';
+import { ModelAdapter } from '../model-adapter/model-adapter.interface';
 
 @Injectable({
   providedIn: 'root',

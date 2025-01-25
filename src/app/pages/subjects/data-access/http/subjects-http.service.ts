@@ -10,7 +10,7 @@ export class SubjectsHttpService extends GenericHttpService<
   SubjectDto,
   SubjectModel
 > {
-  constructor() {
-    super('/subjects', new SubjectsModelAdapter());
+  constructor(private concreteAdapter: SubjectsModelAdapter) {
+    super('/subjects', concreteAdapter);
   }
 }
